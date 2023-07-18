@@ -3,7 +3,7 @@ pipeline {
     stages {
         stage('Build and Test') {
             steps {
-                //build and create a package
+                //build and create aa package
                 sh 'mvn clean package'
             }
         }
