@@ -20,12 +20,18 @@ pipeline {
                     def awsRegion = 'us-east-1'
                     def awsAccount = '969921119504' // Use a string, as variable names cannot start with numbers
                     
+                    // Get the ECR login password using AWS CLI version 2 and pass the AWS region
+                    def ecrLoginCommand = "aws ecr get-login-password --region ${awsRegion}"
+                    def ecrPassword = sh(returnStdout: true, script: ecrLoginCommand).trim()
+                    
+                    // Login to Docker using the retrieved password
+                    sh "echo '${ecrPassword}' | docker login --username AWS --password-stdin ${awsAccount}.dkr.ecr.${awsRegion}.amazonaws.com"
+                    
+                    // Continue with the rest of the Docker commands
                     sh '''
-                        echo $awsRegion $awsAccount
-                        aws ecr get-login-password --region $awsRegion | docker login --username AWS --password-stdin $awsAccount.dkr.ecr.$awsRegion.amazonaws.com
                         docker build -t javaapp:1.0 .
-                        docker tag javaapp:1.0 $awsAccount.dkr.ecr.$awsRegion.amazonaws.com/javaapp:1.0
-                        docker push $awsAccount.dkr.ecr.$awsRegion.amazonaws.com/javaapp:1.0
+                        docker tag javaapp:1.0 ${awsAccount}.dkr.ecr.${awsRegion}.amazonaws.com/javaapp:1.0
+                        docker push ${awsAccount}.dkr.ecr.${awsRegion}.amazonaws.com/javaapp:1.0
                     '''
                         
                     }
