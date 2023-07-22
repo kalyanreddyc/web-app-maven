@@ -17,8 +17,8 @@ pipeline {
             steps {
                 script {
                     //def dockerImage = docker.build('javaapp:1.0', '.')
-                    def aws-region="us-east-1"
-                    def aws-account="969921119504"
+                    def aws-region='us-east-1'
+                    def aws-account=969921119504
                     sh '''
                         echo $aws-region $aws-account
                         aws ecr get-login-password --region $aws-region | docker login --username AWS --password-stdin $aws-account.dkr.ecr.$aws-region.amazonaws.com
