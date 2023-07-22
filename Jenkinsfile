@@ -17,14 +17,15 @@ pipeline {
             steps {
                 script {
                     //def dockerImage = docker.build('javaapp:1.0', '.')
-                    def aws-region='us-east-1'
-                    def aws-account=969921119504
+                    def awsRegion = 'us-east-1'
+                    def awsAccount = '969921119504' // Use a string, as variable names cannot start with numbers
+                    
                     sh '''
-                        echo $aws-region $aws-account
-                        aws ecr get-login-password --region $aws-region | docker login --username AWS --password-stdin $aws-account.dkr.ecr.$aws-region.amazonaws.com
+                        echo $awsRegion $awsAccount
+                        aws ecr get-login-password --region $awsRegion | docker login --username AWS --password-stdin $awsAccount.dkr.ecr.$awsRegion.amazonaws.com
                         docker build -t javaapp:1.0 .
-                        docker tag javaapp:1.0 $aws-account.dkr.ecr.$aws-region.amazonaws.com/javaapp:1.0
-                        docker push $aws-account.dkr.ecr.$aws-region.amazonaws.com/javaapp:1.0
+                        docker tag javaapp:1.0 $awsAccount.dkr.ecr.$awsRegion.amazonaws.com/javaapp:1.0
+                        docker push $awsAccount.dkr.ecr.$awsRegion.amazonaws.com/javaapp:1.0
                     '''
                         
                     }
