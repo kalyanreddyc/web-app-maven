@@ -16,7 +16,7 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 script {
-                    ##def dockerImage = docker.build('javaapp:1.0', '.')
+                    //def dockerImage = docker.build('javaapp:1.0', '.')
                 `   def dockerImage = docker.build("${awsAccountId}.dkr.ecr.${awsRegion}.amazonaws.com/${ecrRepository}:${dockerImageTag}", '.')
                     }
                 }
