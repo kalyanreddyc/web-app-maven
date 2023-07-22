@@ -16,7 +16,28 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 script {
-                    def dockerImage = docker.build('javaapp:1.0', '.')
+                    //def dockerImage = docker.build('javaapp:1.0', '.')
+                    sh '''
+                            awsRegion=\'us-east-1\'
+                            ecrRepository=\'javaapp\'
+                            dockerImageTag=\'1.0\'
+                            awsAccountId=\'969921119504\'
+                            credentialsId=\'kalyancisco\'
+                            
+                            # Set AWS credentials for AWS CLI (replace the values with your actual AWS credentials)
+                            export AWS_ACCESS_KEY_ID="YOUR_AWS_ACCESS_KEY_ID"
+                            export AWS_SECRET_ACCESS_KEY="YOUR_AWS_SECRET_ACCESS_KEY"
+                            
+                            # Authenticate Docker with AWS ECR (assuming AWS CLI is already installed and configured)
+                            aws ecr get-login-password --region $awsRegion | docker login --username AWS --password-stdin ${awsAccountId}.dkr.ecr.${awsRegion}.amazonaws.com
+                            
+                            # Build the Docker image
+                            docker build -t "${awsAccountId}.dkr.ecr.${awsRegion}.amazonaws.com/${ecrRepository}:${dockerImageTag}" .
+                            
+                            # Push the Docker image to AWS ECR
+                            docker push "${awsAccountId}.dkr.ecr.${awsRegion}.amazonaws.com/${ecrRepository}:${dockerImageTag}"
+                    '''
+                        
                     }
                 }
         }
