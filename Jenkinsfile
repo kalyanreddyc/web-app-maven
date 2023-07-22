@@ -16,8 +16,12 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 script {
-                    //def dockerImage = docker.build('javaapp:1.0', '.')
-                `   def dockerImage = docker.build("${awsAccountId}.dkr.ecr.${awsRegion}.amazonaws.com/${ecrRepository}:${dockerImageTag}")
+                    def awsRegion = 'us-east-1'
+                    def ecrRepository = 'javaapp'
+                    def dockerImageTag = '1.0'
+                    def awsAccountId = '969921119504'
+                    def dockerImage = docker.build('${awsAccountId}.dkr.ecr.${awsRegion}.amazonaws.com/${ecrRepository}:${dockerImageTag}', '.')
+                `   //def dockerImage = docker.build("${awsAccountId}.dkr.ecr.${awsRegion}.amazonaws.com/${ecrRepository}:${dockerImageTag}")
                     }
                 }
         }
