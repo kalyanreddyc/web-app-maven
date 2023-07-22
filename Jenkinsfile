@@ -17,33 +17,20 @@ pipeline {
             steps {
                 script {
                     //def dockerImage = docker.build('javaapp:1.0', '.')
-                   def awsRegion = 'us-east-1'
-                    def awsAccount = '969921119504'
-                    def ecrLoginCommand = "aws ecr get-login-password --region ${awsRegion}"
-                    
-                    // Use the 'withCredentials' block to securely expose AWS credentials
-                    withCredentials([
-                        string(credentialsId: 'kalyancisco', variable: 'AWS_ACCESS_KEY_ID'),
-                        string(credentialsId: 'kalyancisco', variable: 'AWS_SECRET_ACCESS_KEY')
-                    ]) {
-                        // Retrieve the AWS Access Key ID and Secret Access Key from credentials
-                        def awsAccessKeyId = env.AWS_ACCESS_KEY_ID
-                        def awsSecretAccessKey = env.AWS_SECRET_ACCESS_KEY
+                    def awsRegion = 'us-east-1'
+                    def awsAccountId = '969921119504'
+                    def ecrRepository = 'javaapp'
+                    def dockerImageTag = '1.0'
+                    def dockerImage = "${awsAccountId}.dkr.ecr.${awsRegion}.amazonaws.com/${ecrRepository}:${dockerImageTag}"
 
-                        // Use the retrieved credentials to execute the AWS CLI command
-
-                        def ecrPassword = sh(returnStdout: true, script: "${ecrLoginCommand}").trim()
-
-                        // Login to Docker using the retrieved password
-                        sh "echo '${ecrPassword}' | docker login --username AWS --password-stdin ${awsAccount}.dkr.ecr.${awsRegion}.amazonaws.com"
-
-                        // Continue with the rest of the Docker commands
-                        sh '''
-                            docker build -t javaapp:1.0 .
-                            docker tag javaapp:1.0 ${awsAccount}.dkr.ecr.${awsRegion}.amazonaws.com/javaapp:1.0
-                            docker push ${awsAccount}.dkr.ecr.${awsRegion}.amazonaws.com/javaapp:1.0
-                        '''
-                      }
+                    // Use the 'withAWS' block to securely handle ECR authentication
+                    withAWS(region: awsRegion, credentials: 'kalyancisco') {
+                        // Build and push Docker image to ECR
+                        sh """
+                            docker build -t ${dockerImage} .
+                            docker push ${dockerImage}
+                        """
+                    }
                         
                     }
                 }
