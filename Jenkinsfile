@@ -16,7 +16,7 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 sh '''
-              docker build . --tag javaapp:$BUILD_NUMBER
+              docker build . -t javaapp:$BUILD_NUMBER
               docker tag javaapp:$BUILD_NUMBER 969921119504.dkr.ecr.us-east-1.amazonaws.com/javaapp:$BUILD_NUMBER
                 
                 '''
@@ -25,7 +25,7 @@ pipeline {
         }
         stage('Push Docker Image') {
             steps{
-                withAWS(credentials: 'AWS', region: 'us-east-1') {
+                withAWS(credentials: 'kalyancisco', region: 'us-east-1') {
                     sh '''
                     aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 969921119504.dkr.ecr.us-east-1.amazonaws.com
                     docker push 969921119504.dkr.ecr.us-east-1.amazonaws.com/javaapp:$BUILD_NUMBER
