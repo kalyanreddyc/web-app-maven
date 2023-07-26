@@ -15,43 +15,27 @@ pipeline {
         }
         stage('Build Docker Image') {
             steps {
-                script {
-                    //def dockerImage = docker.build('javaapp:1.0', '.')
-                    def awsRegion = 'us-east-1'
-                    def awsAccountId = '969921119504'
-                    def ecrRepository = 'javaapp'
-                    def dockerImageTag = '1.0'
-                    def dockerImage = "${awsAccountId}.dkr.ecr.${awsRegion}.amazonaws.com/${ecrRepository}:${dockerImageTag}"
-
-                    // Use the 'withAWS' block to securely handle ECR authentication
-                    withAWS(region: awsRegion, credentials: 'kalyancisco') {
-                        // Build and push Docker image to ECR
-                        sh """
-                            docker build -t ${dockerImage} .
-                            docker push ${dockerImage}
-                        """
-                    }
-                        
-                    }
-                }
+                sh '''
+              docker build . --tag javaapp:$BUILD_NUMBER
+              docker tag javaapp:$BUILD_NUMBER 969921119504.dkr.ecr.us-east-1.amazonaws.com/javaapp:$BUILD_NUMBER
+                
+                '''
+                
+            }
         }
-       // stage('Push Docker Image to ECR') {
-         //   steps {
-         //       script {
-           //         def awsRegion = 'us-east-1'
-             //       def ecrRepository = 'javaapp'
-               //     def dockerImageTag = '1.0'
-                 //   def awsAccountId = '969921119504'
-                   // def ecrCredentials = amazonECR(credentialsId: 'kalyancisco', region: awsRegion)
-                  //  def dockerImage = docker.build("${awsAccountId}.dkr.ecr.${awsRegion}.amazonaws.com/${ecrRepository}:${dockerImageTag}")
-                    // withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', credentialsId: 'kalyancisco', accessKeyVariable: 'AWS_ACCESS_KEY_ID', secretKeyVariable: 'AWS_SECRET_ACCESS_KEY']]) {
-                    //     docker.withRegistry("https://${awsAccountId}.dkr.ecr.${awsRegion}.amazonaws.com", 'ecr') {
-                    //        dockerImage.push()
-                      //  }
-                    //}
-                //}
-            //}
-        //}
+        stage('Push Docker Image') {
+            steps{
+                withAWS(credentials: 'AWS', region: 'us-east-1') {
+                    sh '''
+                    aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 969921119504.dkr.ecr.us-east-1.amazonaws.com
+                    docker push 969921119504.dkr.ecr.us-east-1.amazonaws.com/javaapp:$BUILD_NUMBER
+                     '''
+                }
+            } 
+
+        }
+   
+
     }
 }
 
