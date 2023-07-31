@@ -20,3 +20,5 @@ spec:
         image: 969921119504.dkr.ecr.us-east-1.amazonaws.com/javaapp
         ports:
         - containerPort: 8080
+      imagePullSecrets:
+      - name: aws-ecr-credentials
