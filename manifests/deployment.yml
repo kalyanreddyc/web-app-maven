@@ -16,9 +16,7 @@ spec:
         app: javaapp
     spec:
       containers:
-      - name: javaapp
-        image: 969921119504.dkr.ecr.us-east-1.amazonaws.com/javaapp
+      - name: myapp
+        image: nanajanashia/argocd-app:1.2
         ports:
         - containerPort: 8080
-      imagePullSecrets:
-      - name: aws-ecr-credentials
