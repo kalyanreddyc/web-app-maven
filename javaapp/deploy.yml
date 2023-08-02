@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: javaapp
+  namespace: javaapp
+  labels:
+    app: javaapp
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: javaapp
+  template:
+    metadata:
+      labels:
+        app: javaapp
+    spec:
+      containers:
+      - name: javaapp
+        image: 969921119504.dkr.ecr.us-east-1.amazonaws.com/javaapp
+        ports:
+        - containerPort: 8080
+      imagePullSecrets:
+      - name: aws-ecr-credentials
