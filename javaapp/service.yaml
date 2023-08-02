@@ -1,0 +1,13 @@
+kind: Service
+metadata:
+  name: service
+  namespace: javaapp
+spec:
+  type: NodePort
+  ports:
+  - name: http
+    port: 5000
+    targetPort: 8000
+    protocol: TCP
+  selector:
+    app: javaapp
