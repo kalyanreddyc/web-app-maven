@@ -4,19 +4,19 @@ metadata:
   name: javaapp
   namespace: javaapp
   labels:
-    app: javaapp1
+    app: javaapp
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: javaapp1
+      app: javaapp
   template:
     metadata:
       labels:
-        app: javaapp1
+        app: javaapp
     spec:
       containers:
-      - name: javaapp1
+      - name: javaapp
         image: 969921119504.dkr.ecr.us-east-1.amazonaws.com/javaapp
         ports:
         - containerPort: 8000
