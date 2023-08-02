@@ -1,19 +1,19 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: javaapp
+  name: javaapp1
   namespace: javaapp
   labels:
-    app: javaapp
+    app: javaapp1
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: javaapp
+      app: javaapp1
   template:
     metadata:
       labels:
-        app: javaapp
+        app: javaapp1
     spec:
       containers:
       - name: myapp
