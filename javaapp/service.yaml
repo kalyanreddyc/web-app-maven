@@ -10,4 +10,4 @@ spec:
     targetPort: 8000
     protocol: TCP
   selector:
-    app: javaapp
+    app: javaapp1
