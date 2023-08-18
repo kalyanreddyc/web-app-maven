@@ -28,7 +28,7 @@ pipeline {
                  withAWS(credentials: 'kalyancisco', region: 'us-east-1') {
                     sh '''
                     aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 969921119504.dkr.ecr.us-east-1.amazonaws.com
-                    docker push 969921119504.dkr.ecr.us-east-1.amazonaws.com/javaapp:$BUILD_NUMBER
+                    docker push 620535894742.dkr.ecr.us-east-1.amazonaws.com/javaapp:$BUILD_NUMBER
                      '''
                 }
             } 
