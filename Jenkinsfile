@@ -17,7 +17,7 @@ pipeline {
             steps {
                 sh '''
               docker build . -t javaapp:$BUILD_NUMBER
-              docker tag javaapp:$BUILD_NUMBER 969921119504.dkr.ecr.us-east-1.amazonaws.com/javaapp:$BUILD_NUMBER
+              docker tag javaapp:$BUILD_NUMBER 620535894742.dkr.ecr.us-east-1.amazonaws.com/javaapp:$BUILD_NUMBER
                 
                 '''
                 
