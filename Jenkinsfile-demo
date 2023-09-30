@@ -1,0 +1,29 @@
+//declarative
+pipeline {
+    agent any
+    stages{
+        stage('checkout'){
+            steps {
+                git branch: 'dev', credentialsId: 'a2587514-3752-493e-afac-85bb7763c38f', url: 'https://github.com/kalyanreddyc/second-demo.git'
+            }   
+        }
+        stage('Build'){
+            steps{
+                script{
+                def mvnHome = "/opt/maven/apache-maven-3.9.4"
+                env.PATH = "${mvnHome}/bin:${env.PATH}"
+                sh '''
+                mvn clean package
+                '''
+                }
+            }
+        }
+        stage('sonar'){
+            steps{
+                sh '''
+                mvn clean sonar:sonar
+                '''
+            }
+        }
+    }
+}
