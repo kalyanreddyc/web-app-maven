@@ -1,13 +1,16 @@
 pipeline{
   agent any
   stages{
-    stage('Build'){
-      steps{
-        def mvnHome = "/opt/maven/apache-maven-3.9.4"
-        env.PATH = "${mvnHome}/bin:${env.PATH}"
-        sh 'mvn clean package'
-      }
-
-    }
+        stage('Build'){
+            steps{
+                script{
+                def mvnHome = "/opt/maven/apache-maven-3.9.4"
+                env.PATH = "${mvnHome}/bin:${env.PATH}"
+                sh '''
+                mvn clean package
+                '''
+                }
+            }
+        }
   }
 }
