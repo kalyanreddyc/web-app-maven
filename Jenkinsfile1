@@ -25,8 +25,8 @@ pipeline{
         stage('Docker'){
           steps{
             sh '''
-            docker build -t drilldevopsjavaapp:$BUILD_NUMBER .
-            docker tag drilldevopsjavaapp:$BUILD_NUMBER 557126870360.dkr.ecr.us-east-1.amazonaws.com/drilldevopscicd:$BUILD_NUMBER
+            sudo docker build -t drilldevopsjavaapp:$BUILD_NUMBER .
+            sudo docker tag drilldevopsjavaapp:$BUILD_NUMBER 557126870360.dkr.ecr.us-east-1.amazonaws.com/drilldevopscicd:$BUILD_NUMBER
             '''
           }
         }
