@@ -85,6 +85,22 @@
 		</dependency>
 		
 	</dependencies>
+
+	<distributionManagement>
+	
+	    <repository>
+	      <id>nexus</id>
+	      <name>DrillDevOps Releases Nexus Repository</name>
+	      <url>http://34.204.60.103:8081/repository/maven-releases/</url>
+	    </repository>
+	    
+	    <snapshotRepository>
+	      <id>nexus</id>
+	      <name>DrillDevOps Snapshot Nexus Repository </name>
+	      <url>http://34.204.60.103:8081/repository/maven-snapshots/</url>
+	    </snapshotRepository>
+	    
+	</distributionManagement>
 	
 	
 	<build>
