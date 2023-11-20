@@ -1,0 +1,15 @@
+@Library('drilldevops-sharedlibrary@test') _
+
+pipeline {
+    agent any
+
+    stages {
+        stage('Build and Deploy') {
+            steps {
+                script {
+                    multiBranchPipelineBuild() // Replace with the actual name of your function
+                }
+            }
+        }
+    }
+}
