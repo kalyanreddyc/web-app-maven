@@ -1,8 +1,9 @@
 @Library('drilldevops-sharedlibrary@test') _
 
 pipeline {
-    agent any
-
+    agent {
+        label 'linux-agent'
+    }
     stages {
         stage('Build and Deploy') {
             steps {
